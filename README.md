@@ -1,0 +1,11 @@
+# Thanx SDK for Android
+
+Thanx SDK provides a simple way to get the Thanx customer engagement experience into your mobile app.
+
+## Documentation
+
+Pending
+
+## Demo
+
+Pending

@@ -15,24 +15,29 @@ The SDK will be delivered as a Gradle package distributes via
 Thanx will provide the SDK `Client ID` and a `Client Secret` via a secure
 channel.
 
-Authentication of the SDK should be done with that Client ID and Client Secret.
-The developer, should initialize the SDK when the app launches with those
-values.
+Authentication of the SDK should be done with the provided SDK `Client ID` and 
+`Client Secret`. The developer, should initialize the SDK when the app launches
+with those values.
 
 ### User
 
-Once the user logs into the app, the user's details (email, name, developer
-user identifier, Thanx user identifier, etc) should be set in the SDK.
+This SDK supports user authentication via access token or user login.
 
-If no Thanx user identifier is provided during authentication, the SDK then
-tries to match to a Thanx user via email only and fires a callback with success
-or failure:
-* If match success, the SDK will return the Thanx user identifier and the
-  developer should save that in order to authenticate the user in subsequent
-  sessions.
-* If match failure, the SDK will present the user with the Thanx sign up flow in
-  order to register/login into the Thanx platform. After the user completes the
-  Thanx registration/authentication, the SDK will fire the callbacks again.
+**Access Token**:
+
+If an access token is provided on SDK initialization, the user and SDK will be
+automatically authenticated.
+
+**User Login**:
+
+If no access token is provided on SDK initialization, a login form will be
+displayed to the user in the webview where they will be prompted to login or
+create an account.
+
+**Post Authentication**
+
+After authentication is completed through either mechanism, the user's details
+(`email`, `firstName`, `lastName`) will be accessible via the SDK.
 
 ## Push Notifications
 
@@ -127,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    // Automatic User Authentication
+    // Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN");
+    // Manual User Authentication
     Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true);
   }
 }
@@ -143,6 +151,9 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+    // Automatic User Authentication
+    Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN")
+    // Manual User Authentication
     Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true)
   }
 }
@@ -424,7 +435,6 @@ please refer to the
   </strong>
 </aside>
 
-
 ## Debug Mode
 
 In order to run the SDK in debug mode, you'll need to initialize it with the debug flag as true:
@@ -434,6 +444,7 @@ In order to run the SDK in debug mode, you'll need to initialize it with the deb
 ```java
 // MainActivity.java
 Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true);
+Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN");
 ```
 
 **Kotlin**:
@@ -441,6 +452,7 @@ Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true);
 ```kotlin
 MainActivity.kt
 Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true)
+Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN")
 ```
 
 Running the SDK in debug will provide you with extra console output and most

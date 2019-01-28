@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     // Automatic User Authentication
-    // Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN");
+    Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN");
     // Manual User Authentication
     Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true);
   }

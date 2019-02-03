@@ -42,8 +42,8 @@ After authentication is completed through either mechanism, the user's details
 ## Push Notifications
 
 Thanx will need the FCM API key in order to send Loyalty related push
-notifications to the user. The Thanx team will work with Westfield to provide a
-mechanism for securely exchanging this information.
+notifications to the user. The Thanx team will work with the merchant to
+provide a mechanism for securely exchanging this information.
 
 In the app, after the developer asks for push notifications permissions and the
 user accepts, the developer should send the push registration token to the SDK

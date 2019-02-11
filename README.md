@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     // Automatic User Authentication
-    Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN");
+    Thanx.initialize(this, "USER_ACCESS_TOKEN", true);
     // Manual User Authentication
     Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true);
   }
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     // Automatic User Authentication
-    Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN")
+    Thanx.initialize(this, "USER_ACCESS_TOKEN", true)
     // Manual User Authentication
     Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true)
   }
@@ -444,7 +444,7 @@ In order to run the SDK in debug mode, you'll need to initialize it with the deb
 ```java
 // MainActivity.java
 Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true);
-Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN");
+Thanx.initialize(this, "USER_ACCESS_TOKEN", true);
 ```
 
 **Kotlin**:
@@ -452,7 +452,7 @@ Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCES
 ```kotlin
 MainActivity.kt
 Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true)
-Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, "USER_ACCESS_TOKEN")
+Thanx.initialize(this, "USER_ACCESS_TOKEN", true)
 ```
 
 Running the SDK in debug will provide you with extra console output and most

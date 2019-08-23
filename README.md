@@ -179,9 +179,6 @@ Use the following in order to launch the Activity:
 Intent thanxWebView = new Intent(MainActivity.this, WebActivity.class);
 // Launch the intent
 startActivity(thanxWebView);
-
-// Alternatively, you can use the helper method to launch the activity
-// WebActivity.start(this, null);
 ```
 
 ```kotlin
@@ -191,9 +188,6 @@ Kotlin
 val thanxWebViewIntent = Intent(context, WebActivity::class.java)
 // Launch the intent
 startActivity(thanxWebViewIntent)
-
-// Alternatively, you can use the helper method to launch the activity
-// WebActivity.start(context)
 ```
 
 #### Launch as a new Fragment
@@ -228,6 +222,233 @@ supportFragmentManager
   .add(R.id.fragment_container, webFragment, "thanx_web_fragment")
   .addToBackStack("thanx_web_fragment") // Add support for the back button to dismiss the fragment
   .commit()
+```
+
+## Loading Callbacks
+
+Callbacks are provided as an interface in order to know when the Thanx SDK mobile
+experience is loading.
+
+**Java**:
+```java
+interface LoadingListener {
+  // Callback triggered when the initial load starts
+  void onInitialLoadStart(String url);
+
+  // Callback triggered when any load starts (including the initial load)
+  // Note: It might be triggered multiple times for the same page
+  void onLoadStart(String url);
+
+  // Callback triggered when the initial load finishes
+  void onInitialLoadFinish(String url);
+
+  // Callback triggered when any load finishes (including the initial load)
+  // Note: It might be triggered multiple times for the same page
+  void onLoadFinish(String url);
+}
+```
+
+**Kotlin**
+```kotlin
+interface LoadingListener {
+  // Callback triggered when the initial load starts
+  fun onInitialLoadStart(url: String?) {}
+
+  // Callback triggered when any load starts (including the initial load)
+  // Note: It might be triggered multiple times for the same page
+  fun onLoadStart(url: String?) {}
+
+  // Callback triggered when the initial load finishes
+  fun onInitialLoadFinish(url: String?) {}
+
+  // Callback triggered when any load finishes (including the initial load)
+  // Note: It might be triggered multiple times for the same page
+  fun onLoadFinish(url: String?) {}
+}
+```
+
+#### Implementing the callbacks with WebActivity
+
+In order to implement them with the WebActivity provided, a new activity that
+inherits from WebActivity needs to be created implementing the `LoadingListener` interface.
+
+**Java**:
+```java
+public class CustomWebActivity extends WebActivity implements LoadingListener {
+  @Override
+  public void onInitialLoadStart(@Nullable String url) {
+    // Callback triggered when the initial load starts
+    // E.g. show loading spinner
+  }
+
+  @Override
+  public void onInitialLoadFinish(@Nullable String url) {
+    // Callback triggered when the initial load finishes
+    // E.g. hide loading spinner
+  }
+
+  @Override
+  public void onLoadStart(@Nullable String url) {
+    // Callback triggered when any load starts (including the initial load)
+    // Note: It might be triggered multiple times for the same page
+  }
+
+  @Override
+  public void onLoadFinish(@Nullable String url) {
+    // Callback triggered when any load finishes (including the initial load)
+    // Note: It might be triggered multiple times for the same page
+  }
+}
+```
+
+**Kotlin**:
+
+```kotlin
+class CustomWebActivity: WebActivity(), LoadingListener {
+  override fun onInitialLoadStart(url: String?) {
+    // Callback triggered when the initial load starts
+    // E.g. show loading spinner
+  }
+
+  override fun onInitialLoadFinish(url: String?) {
+    // Callback triggered when the initial load finishes
+    // E.g. hide loading spinner
+  }
+
+  override fun onLoadFinish(url: String?) {
+    // Callback triggered when any load starts (including the initial load)
+    // Note: It might be triggered multiple times for the same page
+  }
+
+  override fun onLoadStart(url: String?) {
+    // Callback triggered when any load finishes (including the initial load)
+    // Note: It might be triggered multiple times for the same page
+  }
+}
+```
+
+This new custom activity needs to be registered in your Manifest.xml inside
+the application keys.
+
+```xml
+<!-- Manifest.xml -->
+<application
+  android:allowBackup="true"
+  android:icon="@mipmap/ic_launcher"
+  android:label="@string/app_name"
+  android:roundIcon="@mipmap/ic_launcher_round"
+  android:supportsRtl="true"
+  android:theme="@style/AppTheme"
+>
+  <!-- Your other activities... -->
+
+  <!-- The new CustomWebActivity -->
+  <activity android:name=".CustomWebActivity"></activity>
+</application>
+```
+
+Then, you just need to launch the newly created activity (`CustomWebActivity`)
+instead of the default `WebActivity`
+
+**Java**:
+```java
+// Create the intent
+Intent customThanxWebView = new Intent(MainActivity.this, CustomWebActivity.class);
+// Launch the intent
+startActivity(customThanxWebView);
+```
+
+**Kotlin**:
+```kotlin
+// Create the intent
+val customThanxWebViewIntent = Intent(context, CustomWebActivity::class.java)
+// Launch the intent
+startActivity(customThanxWebViewIntent)
+```
+
+#### Implementing the callbacks with WebFragment
+
+To add the loading callbacks to the WebFragment, your activity that launches
+the fragments needs to implement the `LoadingInterface`:
+
+**Java**:
+```java
+public class MainActivity extends AppCompatActivity implements LoadingListener {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    // ...
+
+    // Display the fragment however you want
+    getSupportFragmentManager()
+      .beginTransaction()
+      .add(R.id.web_fragment_container, WebFragment.newInstance(null), "thanx_web_fragment")
+      .addToBackStack("thanx_web_fragment")
+      .commit();
+  }
+
+
+  @Override
+  public void onInitialLoadFinish(@Nullable String url) {
+    // Callback triggered when the initial load starts
+    // E.g. show loading spinner
+  }
+
+  @Override
+  public void onInitialLoadStart(@Nullable String url) {
+    // Callback triggered when the initial load finishes
+    // E.g. hide loading spinner
+  }
+
+  @Override
+  public void onLoadFinish(@Nullable String url) {
+    // Callback triggered when any load starts (including the initial load)
+  }
+
+  @Override
+  public void onLoadStart(@Nullable String url) {
+    // Callback triggered when any load finishes (including the initial load)
+  }
+}
+```
+
+**Kotlin**:
+```kotlin
+class MainActivity : AppCompatActivity(), LoadingListener {
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    // ...
+
+    // Instantiate a new WebFragment
+    val webFragment = WebFragment.newInstance(null);
+
+    // Display the fragment however you want
+    getSupportFragmentManager()
+      .beginTransaction()
+      .add(R.id.web_view, webFrament, "thanx_web_fragment")
+      .addToBackStack("thanx_web_fragment")
+      .commit();
+
+    // ...
+  }
+
+  override fun onInitialLoadStart(url: String?) {
+    // Callback triggered when the initial load starts
+    // E.g. show loading spinner
+  }
+
+  override fun onInitialLoadFinish(url: String?) {
+    // Callback triggered when the initial load finishes
+    // E.g. hide loading spinner
+  }
+
+  override fun onLoadFinish(url: String?) {
+    // Callback triggered when any load starts (including the initial load)
+  }
+
+  override fun onLoadStart(url: String?) {
+    // Callback triggered when any load finishes (including the initial load)
+  }
+}
 ```
 
 ## Push Notifications

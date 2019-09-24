@@ -133,9 +133,9 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     // Automatic User Authentication
-    Thanx.initialize(this, "USER_ACCESS_TOKEN", true);
+    Thanx.initialize(this, "USER_ACCESS_TOKEN", true, true, null);
     // Manual User Authentication
-    Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true);
+    Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true, true, null);
   }
 }
 ```
@@ -152,9 +152,9 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     // Automatic User Authentication
-    Thanx.initialize(this, "USER_ACCESS_TOKEN", true)
+    Thanx.initialize(context = this, accessToken = "USER_ACCESS_TOKEN", debug = false, logging = true, completion = null)
     // Manual User Authentication
-    Thanx.initialize(this, "YOUR_CLIENT_ID", "YOUR_CLIENT_SECRET", true)
+    Thanx.initialize(context = this, clientId = "YOUR_CLIENT_ID", clientSecret = "YOUR_CLIENT_SECRET", debug = false, logging = true, completion = null)
   }
 }
 ```
@@ -230,6 +230,7 @@ Callbacks are provided as an interface in order to know when the Thanx SDK mobil
 experience is loading.
 
 **Java**:
+
 ```java
 interface LoadingListener {
   // Callback triggered when the initial load starts
@@ -249,6 +250,7 @@ interface LoadingListener {
 ```
 
 **Kotlin**
+
 ```kotlin
 interface LoadingListener {
   // Callback triggered when the initial load starts
@@ -273,6 +275,7 @@ In order to implement them with the WebActivity provided, a new activity that
 inherits from WebActivity needs to be created implementing the `LoadingListener` interface.
 
 **Java**:
+
 ```java
 public class CustomWebActivity extends WebActivity implements LoadingListener {
   @Override
@@ -351,6 +354,7 @@ Then, you just need to launch the newly created activity (`CustomWebActivity`)
 instead of the default `WebActivity`
 
 **Java**:
+
 ```java
 // Create the intent
 Intent customThanxWebView = new Intent(MainActivity.this, CustomWebActivity.class);
@@ -359,6 +363,7 @@ startActivity(customThanxWebView);
 ```
 
 **Kotlin**:
+
 ```kotlin
 // Create the intent
 val customThanxWebViewIntent = Intent(context, CustomWebActivity::class.java)
@@ -372,6 +377,7 @@ To add the loading callbacks to the WebFragment, your activity that launches
 the fragments needs to implement the `LoadingInterface`:
 
 **Java**:
+
 ```java
 public class MainActivity extends AppCompatActivity implements LoadingListener {
   @Override
@@ -412,6 +418,7 @@ public class MainActivity extends AppCompatActivity implements LoadingListener {
 ```
 
 **Kotlin**:
+
 ```kotlin
 class MainActivity : AppCompatActivity(), LoadingListener {
 
@@ -655,6 +662,41 @@ please refer to the
     WebFragment
   </strong>
 </aside>
+
+## Play Store Rating Prompt
+The default app rating prompt will display automatically after using a reward (or activating it if is a statement credit reward).
+
+### Custom text
+To customize the text that gets displayed in the rate prompt, you can add the following keys to your `strings.xml` file
+
+```
+<string name="rate_prompt_title">Custom title text</string>
+<string name="rate_prompt_body">Custom body text</string>
+<string name="rate_prompt_positive_button">Custom positive button text</string>
+<string name="rate_prompt_negative_button">Custom negative button text</string>
+```
+
+### Disable
+In order to disable automatically displaying the prompt, add the following line after SDK initialization:
+
+**Java**:
+
+```java
+# SDK initialization
+Thanx.Companion.initialize(this, "token", false, true, null);
+# Disable Play Store rate prompt after reward redemption
+Thanx.displayRatePrompt(false);
+```
+
+**Kotlin**:
+
+```kotlin
+# SDK initialization
+Thanx.initialize(context = this, accessToken = "token", debug = false, logging = true)
+# Disable Play Store rate prompt after reward redemption
+Thanx.displayRatePrompt(false)
+```
+
 
 ## Debug Mode
 

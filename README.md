@@ -1,4 +1,10 @@
+# ⚠️ Deprecated ⚠️
+
+This SDK has been deprecated and is no longer maintained. Please reach to success@thanx.com if you want to integrate with the Thanx platform.
+
+
 # Thanx Android SDK
+
 
 The Thanx Android SDK provides a simple way to embed the Thanx customer
 engagement experience in Android applications.
